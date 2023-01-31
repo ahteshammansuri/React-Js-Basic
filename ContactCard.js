@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 function Contact(props) {
-    // console.log(props);
     const [ageData, setAge] = useState(false);
+    
     return (
         <div className="contact-card">
             <img src={props.image} alt="profile"></img>

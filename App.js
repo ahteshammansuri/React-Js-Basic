@@ -1,13 +1,11 @@
 import './App.css';
 // import {Contact, Contact2} from "./ContactCard";
 import Contact from "./ContactCard";
+import { useState, useEffect } from 'react';
 
-async function App() {
+function App() {
   const title = "This is a First React Application";
-  const user = await fetch('https://jsonplaceholder.typicode.com/users/10');
-  const getUsers = user.json().then((result) => result);
-  console.log(getUsers.then((result) => result));
-  // const user = [
+  // const user = await fetch([
   //     {
   //         image: "https://via.placeholder.com/100",
   //         name: 'John Doe',
@@ -25,28 +23,52 @@ async function App() {
   //       name: 'den joke',
   //       email: 'den@example.com',
   //       age: 50,
-  //     }
-  // ];
+  //     },
+  // ]);
+
+  const[users,setUsers] = useState([]);
+  const [newData,setNewData] = useState(0);
+
+  useEffect(() => {
+    const user = fetch('https://randomuser.me/api/?results=5');
+    user.then(response => response.json()).then(result => {
+      setUsers(result.results);
+    });
+  },[newData]);
+    // console.log(getUsers.then((result) => result.results));
+
     return (
-    <>
+      <>
       <div align="center">
         <h1>{title}</h1>
       </div>
-      {getUsers.map((element, index) => {
-        return (
-        <Contact 
-          key={index} 
-          name={element.name} 
-          email={element.email} 
-          image={element.image}
-          age={element.age}
-          />
-        );
-      })}
+    
+    {
+      users.length === 0  ? (<h1>loading....</h1>) : (
+        <>
+       { users.map((element, index) => {
+          return (
+          <Contact 
+            key={index} 
+            name={element.name.first} 
+            email={element.email} 
+            image={element.picture.large} 
+            age={element.dob.age}
+            deleteUserCell = {element.cell}
+            />
+            );
+          })
+        }
+          <button onClick={ () => setNewData(newData + 1)} >new Data</button>
+          </>
+      )
+    }
+
+    
     </>
     );
-
-}
+    
+  }
 
 export default App;
 
